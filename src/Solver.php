@@ -10,22 +10,23 @@ class Solver
     public function solve()
     {
         $empty_solution = new Solution($this->puzzle, []);
+        $solutions = $this->searchFrom($empty_solution);
+        return $solutions;
+    }
 
-        $queue = new FifoQueue();
-        $queue->push($empty_solution);
-
-        $solutions = [];
-        while ($queue->hasItems()) {
-            $solution = $queue->pop();
-            if ($solution->isValid()) {
-                if ($solution->isComplete()) {
-                    $solutions[] = $solution;
-                } else {
-                    $queue->pushAll($solution->potentialNextSolutions());
-                }
-            }
+    private function searchFrom(Solution $solution)
+    {
+        if ($solution->isValid() === false) {
+            return [];
         }
 
+        if ($solution->isComplete()) {
+            return [$solution];
+        }
+
+        return call_user_func_array('array_merge', array_values(array_map(function (Solution $next) {
+            return $this->searchFrom($next);
+        }, $solution->potentialNextSolutions())));
     }
 
     public function test()
