@@ -5,37 +5,27 @@ class Solver
     public function __construct(Puzzle $puzzle)
     {
         $this->puzzle = $puzzle;
-        $this->solutions = [new Solution($this->puzzle, [])];
     }
 
     public function solve()
     {
+        $empty_solution = new Solution($this->puzzle, []);
+
+        $queue = new FifoQueue();
+        $queue->push($empty_solution);
+
         $solutions = [];
-        foreach ($this->getPotentialSolution() as $solution) {
+        while ($queue->hasItems()) {
+            $solution = $queue->pop();
             if ($solution->isValid()) {
                 if ($solution->isComplete()) {
                     $solutions[] = $solution;
                 } else {
-                    $this->pushMoreSolutions($solution->potentialNextSolutions());
+                    $queue->pushAll($solution->potentialNextSolutions());
                 }
             }
         }
 
-        return $solutions;
-    }
-
-    private function getPotentialSolution()
-    {
-        while (count($this->solutions) > 0) {
-            yield array_shift($this->solutions);
-        }
-    }
-
-    private function pushMoreSolutions(array $solutions)
-    {
-        foreach ($solutions as $solution) {
-            array_push($this->solutions, $solution);
-        }
     }
 
     public function test()
