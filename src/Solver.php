@@ -28,20 +28,4 @@ class Solver
             return $this->searchFrom($next);
         }, $solution->potentialNextSolutions())));
     }
-
-    public function test()
-    {
-        $solution = new Solution($this->puzzle, [
-            Solution::TURN_BACKWARD,
-            Solution::TURN_RIGHT,
-            Solution::TURN_FORWARD,
-            Solution::TURN_UP,
-            Solution::TURN_BACKWARD,
-            Solution::TURN_LEFT,
-            Solution::TURN_FORWARD,
-        ]);
-
-        var_dump($solution->isValid());
-        var_dump($solution->isComplete());
-    }
 }
