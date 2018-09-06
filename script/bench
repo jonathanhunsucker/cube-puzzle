@@ -2,4 +2,4 @@
 <?php
 
 include 'autoload.php';
-(new Solver())->solve();
+(new Bench())->test();

@@ -2,11 +2,9 @@
 
 class Solver
 {
-    public function __construct()
+    public function __construct(Puzzle $puzzle)
     {
-        $this->puzzle = new Puzzle([3, 2, 2, 3, 2, 3, 2, 2, 3, 3, 2, 2, 2, 3, 3, 3, 3]);
-        $this->puzzle = new Puzzle([3, 3, 3, 2, 2, 2, 2, 2, 3, 3, 3, 2, 3, 3, 3, 2, 2]);
-        $this->puzzle = new Puzzle([2, 2, 2, 2, 2, 2, 2]);
+        $this->puzzle = $puzzle;
         $this->solutions = [new Solution($this->puzzle, [])];
     }
 
@@ -23,18 +21,7 @@ class Solver
             }
         }
 
-        if (count($solutions)) {
-            foreach ($solutions as $solution) {
-                $this->exclaimVictory($solution);
-            }
-        } else {
-            $this->noteDefeat();
-        }
-    }
-
-    private function exclaimVictory(Solution $solution)
-    {
-        echo "Found solution: " . $solution . "\n";
+        return $solutions;
     }
 
     private function getPotentialSolution()
