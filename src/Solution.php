@@ -2,6 +2,7 @@
 
 class Solution
 {
+    // turn is a misnomer here, direction is more accurate
     const TURN_UP = "up";
     const TURN_RIGHT = "right";
     const TURN_DOWN = "down";

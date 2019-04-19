@@ -2,21 +2,30 @@
 
 class Cube
 {
+    /**
+     * @param int $width - Width of the goal cube
+     * @param int[3][] $filled - List of three-dimensional positions which have been filled already
+     */
     public function __construct(int $width, array $filled)
     {
         $this->width = $width;
         $this->filled = $filled;
     }
 
+    /**
+     * @return boolean True if this Cube is physically possible, ie. no overlapping filled positions
+     */
     public function isValid()
     {
         $seen = [];
 
         foreach ($this->filled as $position) {
+            // enforce 'overlaps' criteria
             if (self::hasSeen($seen, $position)) {
                 return false;
             }
 
+            // enforce 'overflow' criteria
             foreach ($position as $coordinate) {
                 if ($coordinate >= $this->width || $coordinate < 0) {
                     return false;
@@ -29,6 +38,12 @@ class Cube
         return true;
     }
 
+    /**
+     * Build another Cube instance, similar to this one, but with an additional segment pointing in $turn direction for length $length
+     *
+     * @param string $turn - Identifier for direction, see `Solution::TURN_*`
+     * @param int $length - Quantity of cubes in segment
+     */
     public function with(string $turn, int $length)
     {
         $opening_position = $this->filled[count($this->filled) - 1];
